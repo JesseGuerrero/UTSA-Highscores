@@ -5,6 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>High Scores</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #343a40 !important; /* Dark grey background */
+            color: #f8f9fa !important; /* Light white text color */
+        }
+        table {
+            color: #f8f9fa !important; /* Ensuring table text is also light colored */
+        }
+        a {
+            color: #f8f9fa !important; /* Adjusting link colors for visibility */
+        }
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #495057 !important; /* Slightly lighter grey for striped rows */
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-5">
@@ -21,8 +36,8 @@
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th>H-Index</th>
-                    <th>Citations</th>
+                    <th><a href="?h_index=true">H-Index</a></th>
+                    <th><a href="?">Citations</a></th>
                 </tr>
             </thead>
             <tbody>

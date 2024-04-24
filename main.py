@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import threading
 import time
 from scrapeHS import getHSInfo
@@ -10,15 +10,36 @@ teachers = []
 
 @app.route('/')
 def showAllHS():
-    return render_template('highscores.html', highscores=allPlayers)
+    global allPlayers
+    hindex = request.args.get('h_index')
+    hs = []
+    if hindex:
+        hs = sorted(allPlayers, key=lambda x: x['h_index'], reverse=True)
+    else:
+        hs = sorted(allPlayers, key=lambda x: x['citations'], reverse=True)
+    return render_template('highscores.html', highscores=hs)
 
 @app.route('/student')
 def showStudentHS():
-    return render_template('highscores.html', highscores=students)
+    global students
+    hindex = request.args.get('h_index')
+    hs = []
+    if hindex:
+        hs = sorted(students, key=lambda x: x['h_index'], reverse=True)
+    else:
+        hs = sorted(students, key=lambda x: x['citations'], reverse=True)
+    return render_template('highscores.html', highscores=hs)
 
 @app.route('/teacher')
 def showTeacherHS():
-    return render_template('highscores.html', highscores=teachers)
+    global teachers
+    hindex = request.args.get('h_index')
+    hs = []
+    if hindex:
+        hs = sorted(teachers, key=lambda x: x['h_index'], reverse=True)
+    else:
+        hs = sorted(teachers, key=lambda x: x['citations'], reverse=True)
+    return render_template('highscores.html', highscores=hs)
 
 def dailyUpdate():
     global allPlayers, students, teachers

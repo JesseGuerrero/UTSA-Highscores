@@ -5,8 +5,11 @@ from bs4 import BeautifulSoup
 def _getHSValues(userID: str, name: str) -> dict:
     url = f'https://scholar.google.com/citations?user={userID}'
 
-    # Fetch the page
-    response = requests.get(url)
+    # Fetch the page with headers
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
+    }
+    response = requests.get(url, headers=headers)
     if response.status_code != 200:
         print("Failed to fetch the page")
         return {"name": "", "h_index": -1, "citations": -1}
@@ -29,17 +32,20 @@ def _getHSValues(userID: str, name: str) -> dict:
         return {"name": "", "h_index": -1, "citations": -1}
 
     # Extract values from the second `td` of the first and second `tr`
-    citations = rows[0].find_all('td')[1].text
-    hIndex = rows[1].find_all('td')[1].text
-    return {"name": name, "h_index": hIndex, "citations": citations}
+    citations = rows[1].find_all('td')[1].text
+    hIndex = rows[2].find_all('td')[1].text
+    return {"name": name, "h_index": int(hIndex), "citations": int(citations)}
 
 def getHSInfo(demographic: str):
     hsInfo = []
-    with open(f'{demographic}.txt', 'r') as file:
+    with open(f'players/{demographic}.txt', 'r') as file:
         for line in file:
             user = line.split('-')
             if len(user) == 2:
-                hsInfo.append(_getHSValues(user[0], user[1]))
+                hsValue = _getHSValues(user[0], user[1])
+                if hsValue["citations"] == -1:
+                    continue
+                hsInfo.append(hsValue)
             else:
                 print("Line format error:", line)
     return hsInfo
