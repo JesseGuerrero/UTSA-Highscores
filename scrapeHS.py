@@ -40,7 +40,7 @@ def getHSInfo(demographic: str):
     hsInfo = []
     with open(f'players/{demographic}.txt', 'r') as file:
         for line in file:
-            user = line.split('-')
+            user = line.split('=')
             if len(user) == 2:
                 hsValue = _getHSValues(user[0], user[1])
                 if hsValue["citations"] == -1:
