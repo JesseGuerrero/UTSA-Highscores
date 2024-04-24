@@ -14,7 +14,7 @@ def showAllHS():
 
 @app.route('/student')
 def showStudentHS():
-    return render_template('highscores.html', highscores=students
+    return render_template('highscores.html', highscores=students)
 
 @app.route('/teacher')
 def showTeacherHS():
